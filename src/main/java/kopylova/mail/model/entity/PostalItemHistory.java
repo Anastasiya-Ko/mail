@@ -25,6 +25,14 @@ public class PostalItemHistory {
     Long id;
 
     /**
+     * Связь с таблицей Почтовое отправление<p>
+     * Много смен статуса в истории - у одного Почтового отправления
+     */
+    @ManyToOne
+    @JoinColumn(name = "postal_item_id")
+    PostalItem postalItemOwner;
+
+    /**
      * Статус Почтового отправления
      */
     @Column(name = "status")
@@ -36,14 +44,6 @@ public class PostalItemHistory {
      */
     @Column(name = "create_status")
     LocalDate createStatus;
-
-    /**
-     * Связь с таблицей Почтовое отправление<p>
-     * Много смен статуса в истории - у одного Почтового отправления
-     */
-    @ManyToOne
-    @JoinColumn(name = "postal_item_id")
-    PostalItem postalItemOwner;
 
 
 }

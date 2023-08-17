@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 /**
  * Сущность<p>
- * Почтовый офис
+ * Почтовое отделение
  */
 
 @Data
@@ -21,19 +21,19 @@ public class PostOffice {
     Long id;
 
     /**
-     * Индекс почтового отделения
+     * Индекс Почтового отделения
      */
     @Column(name = "office_index")
     Integer officeIndex;
 
     /**
-     * Наименование почтового отделения
+     * Наименование Почтового отделения
      */
     @Column(name = "office_name")
     String officeName;
 
     /**
-     * Адрес почтового отделения
+     * Адрес Почтового отделения
      */
     @Column(name = "office_address")
     String officeAddress;
