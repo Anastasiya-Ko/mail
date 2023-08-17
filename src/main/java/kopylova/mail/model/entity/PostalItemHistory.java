@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Сущность<p>
@@ -45,5 +46,17 @@ public class PostalItemHistory {
     @Column(name = "create_status")
     LocalDate createStatus;
 
+
+    /**
+     * Связь с таблицей Почтовое отделение<p>
+     * У многих почтовых отделений - много смен статуса
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "postal_item_history_post_office",
+            joinColumns = @JoinColumn(name = "postal_item_history_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_office_id")
+    )
+    List<PostOffice> offices;
 
 }

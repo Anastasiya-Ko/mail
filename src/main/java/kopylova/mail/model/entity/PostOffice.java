@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.awt.print.Book;
+import java.util.List;
+
 /**
  * Сущность<p>
  * Почтовое отделение
@@ -37,5 +40,8 @@ public class PostOffice {
      */
     @Column(name = "office_address")
     String officeAddress;
+
+    @ManyToMany(mappedBy = "offices")
+    List<PostalItemHistory> histories;
 
 }

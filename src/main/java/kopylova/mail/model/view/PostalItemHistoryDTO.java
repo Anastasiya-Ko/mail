@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +23,6 @@ public class PostalItemHistoryDTO {
     LocalDate createStatus;
 
     PostalItemDTO postalItemOwner;
+
+    List<PostOfficeDTO> offices;
 }

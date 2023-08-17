@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 /**
  * Маппинг Истории почтового отправления<p>
  * Сопоставление полей энтити, полям в дто
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class PostalItemHistoryMapper {
 
     PostalItemMapper postalItemMapper;
+    PostOfficeMapper postOfficeMapper;
 
     /**
      * Сопоставление данных дто, данным сущности истории почтового отделения
@@ -45,6 +48,13 @@ public class PostalItemHistoryMapper {
     public PostalItemHistoryDTO mapperToDTO(PostalItemHistory entity) {
 
         PostalItemHistoryDTO view = new PostalItemHistoryDTO();
+
+        view.setStatus(String.valueOf(entity.getStatus()));
+        view.setCreateStatus(entity.getCreateStatus());
+        view.setPostalItemOwner(postalItemMapper.mapperToDTO(entity.getPostalItemOwner()));
+        view.setOffices(entity.getOffices().stream()
+                .map(postOffice -> postOfficeMapper.mapperToDTO(postOffice))
+                .collect(Collectors.toList()));
 
         return view;
     }
