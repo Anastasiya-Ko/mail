@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Контроллер для работы и историей передвижения Почтового отправления
+ * Контроллер для работы с историей передвижения Почтового отправления
  */
 
 @RestController
@@ -44,7 +44,7 @@ public class PostalItemHistoryController {
      * Получение ВСЕЙ ИСТОРИИ движения одного почтового отправления
      */
     @GetMapping
-    public List<PostalItemHistory> read(@RequestParam Long postalItemId){
+    public List<PostalItemHistory> readAllPostalItemHistory(@RequestParam Long postalItemId){
         return postalItemHistoryService.read(postalItemId);
     }
 
@@ -52,7 +52,7 @@ public class PostalItemHistoryController {
      * Получение АКТУАЛЬНОГО СТАТУСА одного почтового отправления
      */
     @GetMapping("/last-status")
-    public String readLastStatus(@RequestParam Long postalItemId){
+    public String readLastStatusPostalItem(@RequestParam Long postalItemId){
         return postalItemHistoryService.readLastStatus(postalItemId);
     }
 }

@@ -23,7 +23,7 @@ public class PostOfficeController {
     }
 
     @GetMapping("/one")
-    public PostOfficeDTO readOnePostOffice(Long postOfficeId){
+    public PostOfficeDTO readOnePostOffice(@RequestParam Long postOfficeId){
         return postOfficeService.readOnePostOffice(postOfficeId);
     }
 
