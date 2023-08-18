@@ -40,8 +40,8 @@ public class PostalItemHistoryService {
         List<PostOffice> officeList = new ArrayList<>();
         officeList.add(office);
 
-        history.setStatus(Status.REGISTRATION);
         history.setPostalItemOwner(postalItem);
+        history.setStatus(Status.REGISTRATION);
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
@@ -58,8 +58,8 @@ public class PostalItemHistoryService {
 
         officeList.add(office);
 
-        history.setStatus(Status.ARRIVAL);
         history.setPostalItemOwner(postalItem);
+        history.setStatus(Status.ARRIVAL);
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
@@ -78,8 +78,8 @@ public class PostalItemHistoryService {
 
         officeList.add(office);
 
-        history.setStatus(Status.DEPARTURE);
         history.setPostalItemOwner(postalItem);
+        history.setStatus(Status.DEPARTURE);
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
@@ -90,11 +90,13 @@ public class PostalItemHistoryService {
     /**
      * Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
      */
-    public PostalItemHistoryDTO receivedPostalItem(Long historyId) {
+    public PostalItemHistoryDTO receivedPostalItem(PostalItem postalItem) {
 
         PostalItemHistory history = new PostalItemHistory();
 
+        history.setPostalItemOwner(postalItem);
         history.setStatus(Status.RECEIVED);
+        history.setOffices(null);
 
         postalItemHistoryRepository.save(history);
 
@@ -121,12 +123,12 @@ public class PostalItemHistoryService {
      */
     public String readLastStatus(Long postalItemId) {
 
-        var status = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
+        var history = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
 
         String result = null;
-        if (!status.isEmpty()){
-            status.sort(Comparator.comparing(PostalItemHistory::getId));
-            result = status.get(status.size() - 1).getStatus().getDescriptions();
+        if (!history.isEmpty()){
+            history.sort(Comparator.comparing(PostalItemHistory::getId));
+            result = history.get(history.size() - 1).getStatus().getDescriptions();
         }
 
         return result;
