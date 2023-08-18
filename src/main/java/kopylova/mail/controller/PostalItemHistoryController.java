@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *
+ * Контроллер для работы и историей передвижения Почтового отправления
  */
 
 @RestController
