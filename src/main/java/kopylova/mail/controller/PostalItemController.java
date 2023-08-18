@@ -24,9 +24,8 @@ public class PostalItemController {
      */
     @PostMapping
     public PostalItemDTO createPostalItem(
-            @Valid @RequestBody PostalItemDTO view,
-            @RequestParam Long officeId) {
-        return postalItemService.createPostalItem(view, officeId);
+            @Valid @RequestBody PostalItemDTO view) {
+        return postalItemService.createPostalItem(view);
     }
 
     /**

@@ -26,22 +26,17 @@ public class PostalItemService {
 
     PostalItemRepository postalItemRepository;
 
-    PostalItemHistoryService postalItemHistoryService;
-    PostOfficeService postOfficeService;
-
     PostalItemMapper postalItemMapper;
 
 
     /**
      * Занесение нового почтового отправления в бд
      */
-    public PostalItemDTO createPostalItem(PostalItemDTO view, Long officeId) {
+    public PostalItemDTO createPostalItem(PostalItemDTO view) {
 
         PostalItem entity = postalItemMapper.mapperToEntity(view);
-        var office = postOfficeService.getById(officeId);
 
         postalItemRepository.save(entity);
-        postalItemHistoryService.registrationPostalItem(entity, office);
 
         return postalItemMapper.mapperToDTO(entity);
 
@@ -65,9 +60,9 @@ public class PostalItemService {
     }
 
     /**
-     * Метод внутреннего пользования, для получения Почтового отправления(сущности) по идентификатору
+     * Метод, для получения Почтового отправления(сущности) по идентификатору
      */
-    private PostalItem getById(Long postalItemId) {
+    public PostalItem getById(Long postalItemId) {
         String ex = String.format(("Почтовое отправление с номером = %d не найдено"), postalItemId);
         return postalItemRepository.findById(postalItemId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, ex));

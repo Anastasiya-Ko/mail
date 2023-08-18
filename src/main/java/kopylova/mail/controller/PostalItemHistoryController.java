@@ -26,6 +26,14 @@ public class PostalItemHistoryController {
     PostalItemHistoryService postalItemHistoryService;
 
     /**
+     * Регистрация почтового отправления
+     */
+    @PostMapping("/registration-postal-item")
+    public PostalItemHistoryDTO registrationPostalItem(@RequestParam Long postalItemId, @RequestParam Long postOfficeId){
+        return postalItemHistoryService.registrationPostalItem(postalItemId, postOfficeId);
+    }
+
+    /**
      * Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
      */
     @PostMapping("/arrival-postal-item")

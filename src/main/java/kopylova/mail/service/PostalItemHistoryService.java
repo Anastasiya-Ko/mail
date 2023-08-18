@@ -28,27 +28,33 @@ import java.util.stream.Collectors;
 public class PostalItemHistoryService {
 
     PostalItemHistoryRepository postalItemHistoryRepository;
+
     PostalItemHistoryMapper postalItemHistoryMapper;
+
     PostOfficeService postOfficeService;
+    PostalItemService postalItemService;
 
     /**
-     * Назначение статуса движения посылки, ПРИ РЕГИСТРАЦИИ
+     * РЕГИСТРАЦИЯ почтового отправления
      */
-    public void registrationPostalItem(PostalItem postalItem, PostOffice office) {
+    public PostalItemHistoryDTO registrationPostalItem(Long postalItemId, Long officeId) {
 
         PostalItemHistory history = new PostalItemHistory();
-        List<PostOffice> officeList = new ArrayList<>();
-        officeList.add(office);
 
-        history.setPostalItemOwner(postalItem);
+        List<PostOffice> officeList = new ArrayList<>();
+        officeList.add(postOfficeService.getById(officeId));
+
+        history.setPostalItemOwner(postalItemService.getById(postalItemId));
         history.setStatus(Status.REGISTRATION);
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
+
+        return postalItemHistoryMapper.mapperToDTO(history);
     }
 
     /**
-     * Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
+     * ??? переделать на получение id Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
      */
     public PostalItemHistoryDTO arrivalPostalItem(PostalItem postalItem, PostOffice office) {
 
@@ -69,7 +75,7 @@ public class PostalItemHistoryService {
     }
 
     /**
-     * Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
+     * переделать на получение id Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
      */
     public PostalItemHistoryDTO departurePostalItem(PostalItem postalItem) {
 
@@ -85,7 +91,7 @@ public class PostalItemHistoryService {
     }
 
     /**
-     * Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
+     * переделать на получение id Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
      */
     public PostalItemHistoryDTO receivedPostalItem(PostalItem postalItem) {
 
