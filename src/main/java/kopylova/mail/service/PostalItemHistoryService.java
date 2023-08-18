@@ -32,7 +32,7 @@ public class PostalItemHistoryService {
     PostOfficeService postOfficeService;
 
     /**
-     * Назначение статуса движения посылки, при регистрации
+     * Назначение статуса движения посылки, ПРИ РЕГИСТРАЦИИ
      */
     public void registrationPostalItem(PostalItem postalItem, PostOffice office) {
 
@@ -71,16 +71,13 @@ public class PostalItemHistoryService {
     /**
      * Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
      */
-    public PostalItemHistoryDTO departurePostalItem(PostalItem postalItem, PostOffice office) {
+    public PostalItemHistoryDTO departurePostalItem(PostalItem postalItem) {
 
         PostalItemHistory history = new PostalItemHistory();
-        List<PostOffice> officeList = new ArrayList<>();
-
-        officeList.add(office);
 
         history.setPostalItemOwner(postalItem);
         history.setStatus(Status.DEPARTURE);
-        history.setOffices(officeList);
+        history.setOffices(null);
 
         postalItemHistoryRepository.save(history);
 
@@ -103,13 +100,6 @@ public class PostalItemHistoryService {
         return postalItemHistoryMapper.mapperToDTO(history);
     }
 
-    /**
-     * Получение статуса почтового отправления
-     */
-    public String readStatusById(Long postalItemId) {
-        return getById(postalItemId).getStatus().getDescriptions();
-
-    }
 
     /**
      * Получение ПОЛНОЙ ИСТОРИИ одного почтового отправления
@@ -120,7 +110,7 @@ public class PostalItemHistoryService {
     }
 
     /**
-     * Получение АКТУАЛЬНОГО статуса одного почтового отправления
+     * Получение КРАЙНЕГО статуса одного почтового отправления
      */
     public String readLastStatus(Long postalItemId) {
 

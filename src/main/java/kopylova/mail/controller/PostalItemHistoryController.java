@@ -25,16 +25,25 @@ public class PostalItemHistoryController {
 
     PostalItemHistoryService postalItemHistoryService;
 
+    /**
+     * Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
+     */
     @PostMapping("/arrival-postal-item")
     public PostalItemHistoryDTO arrivalPostalItem(@Valid @RequestBody PostalItem postalItem, PostOffice office){
         return postalItemHistoryService.arrivalPostalItem(postalItem, office);
     }
 
+    /**
+     * Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
+     */
     @PostMapping("/departure-postal-item")
-    public PostalItemHistoryDTO departurePostalItem(@Valid @RequestBody PostalItem postalItem, PostOffice office){
-        return postalItemHistoryService.departurePostalItem(postalItem, office);
+    public PostalItemHistoryDTO departurePostalItem(@Valid @RequestBody PostalItem postalItem){
+        return postalItemHistoryService.departurePostalItem(postalItem);
     }
 
+    /**
+     * Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
+     */
     @PostMapping("/received-postal-item")
     public PostalItemHistoryDTO receivedPostalItem(@Valid @RequestBody PostalItem postalItem){
         return postalItemHistoryService.receivedPostalItem(postalItem);
@@ -49,7 +58,7 @@ public class PostalItemHistoryController {
     }
 
     /**
-     * Получение АКТУАЛЬНОГО СТАТУСА одного почтового отправления
+     * Получение КРАЙНЕГО СТАТУСА одного почтового отправления
      */
     @GetMapping("/last-status")
     public String readLastStatusPostalItem(@RequestParam Long postalItemId){
