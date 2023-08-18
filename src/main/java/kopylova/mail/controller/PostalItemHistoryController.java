@@ -3,7 +3,6 @@ package kopylova.mail.controller;
 import jakarta.validation.Valid;
 import kopylova.mail.model.entity.PostOffice;
 import kopylova.mail.model.entity.PostalItem;
-import kopylova.mail.model.entity.PostalItemHistory;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.service.PostalItemHistoryService;
 import lombok.AccessLevel;
@@ -45,8 +44,8 @@ public class PostalItemHistoryController {
      * Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
      */
     @PostMapping("/departure-postal-item")
-    public PostalItemHistoryDTO departurePostalItem(@Valid @RequestBody PostalItem postalItem){
-        return postalItemHistoryService.departurePostalItem(postalItem);
+    public PostalItemHistoryDTO departurePostalItem(@RequestParam Long postalItemId){
+        return postalItemHistoryService.departurePostalItem(postalItemId);
     }
 
     /**

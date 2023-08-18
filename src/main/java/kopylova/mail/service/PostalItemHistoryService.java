@@ -75,13 +75,13 @@ public class PostalItemHistoryService {
     }
 
     /**
-     * переделать на получение id Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
+     * УБЫТИЕ из почтового пункта
      */
-    public PostalItemHistoryDTO departurePostalItem(PostalItem postalItem) {
+    public PostalItemHistoryDTO departurePostalItem(Long postalItemId) {
 
         PostalItemHistory history = new PostalItemHistory();
 
-        history.setPostalItemOwner(postalItem);
+        history.setPostalItemOwner(postalItemService.getById(postalItemId));
         history.setStatus(Status.DEPARTURE);
         history.setOffices(null);
 
