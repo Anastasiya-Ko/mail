@@ -40,11 +40,6 @@ public class PostalItemHistory {
     @Enumerated(EnumType.STRING)
     Status status;
 
-    /**
-     * Дата создания статуса
-     */
-    @Column(name = "create_status")
-    LocalDate createStatus;
 
 
     /**

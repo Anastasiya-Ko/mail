@@ -24,12 +24,6 @@ public class PostalItem {
     Long id;
 
     /**
-     * Идентификатор
-     */
-    @Column(name = "identifier")
-    String identifier;
-
-    /**
      * Тип отправления
      */
     @Column(name = "type_item")

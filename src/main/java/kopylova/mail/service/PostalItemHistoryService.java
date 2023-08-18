@@ -2,7 +2,10 @@ package kopylova.mail.service;
 
 import kopylova.mail.mapper.PostalItemHistoryMapper;
 import kopylova.mail.model.dictionary.Status;
+import kopylova.mail.model.entity.PostOffice;
+import kopylova.mail.model.entity.PostalItem;
 import kopylova.mail.model.entity.PostalItemHistory;
+import kopylova.mail.model.view.PostOfficeDTO;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.repository.PostalItemHistoryRepository;
 import lombok.AccessLevel;
@@ -11,6 +14,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Сервис для работы с Историей движения посылки
@@ -22,43 +29,108 @@ public class PostalItemHistoryService {
 
     PostalItemHistoryRepository postalItemHistoryRepository;
     PostalItemHistoryMapper postalItemHistoryMapper;
+    PostOfficeService postOfficeService;
 
     /**
-     * Обновление Истории движения посылки, по прибытию в промежуточный почтовый пункт
-     * @param historyId id Истории движения посылки для изменения в бд
-     * @return представление, изменённой в бд, сущности Истории движения посылки
+     * Назначение статуса движения посылки, при регистрации
      */
-    public PostalItemHistoryDTO arrivalPostalItem(Long historyId) {
-        var updateEntity = getById(historyId);
-        updateEntity.setStatus(Status.ARRIVAL);
-        postalItemHistoryRepository.save(updateEntity);
-        return postalItemHistoryMapper.mapperToDTO(updateEntity);
+    public void registrationPostalItem(PostalItem postalItem, PostOffice office) {
+
+        PostalItemHistory history = new PostalItemHistory();
+        List<PostOffice> officeList = new ArrayList<>();
+        officeList.add(office);
+
+        history.setStatus(Status.REGISTRATION);
+        history.setPostalItemOwner(postalItem);
+        history.setOffices(officeList);
+
+        postalItemHistoryRepository.save(history);
     }
 
     /**
-     * Обновление Истории движения посылки, по убытию из почтового пункта
-     * @param historyId id Истории движения посылки для изменения в бд
-     * @return представление, изменённой в бд, сущности Истории движения посылки
+     * Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
      */
-    public PostalItemHistoryDTO departurePostalItem(Long historyId) {
-        var updateEntity = getById(historyId);
-        updateEntity.setStatus(Status.DEPARTURE);
-        postalItemHistoryRepository.save(updateEntity);
-        return postalItemHistoryMapper.mapperToDTO(updateEntity);
+    public PostalItemHistoryDTO arrivalPostalItem(PostalItem postalItem, PostOffice office) {
+
+
+        PostalItemHistory history = new PostalItemHistory();
+        List<PostOffice> officeList = new ArrayList<>();
+
+        officeList.add(office);
+
+        history.setStatus(Status.ARRIVAL);
+        history.setPostalItemOwner(postalItem);
+        history.setOffices(officeList);
+
+        postalItemHistoryRepository.save(history);
+
+        return postalItemHistoryMapper.mapperToDTO(history);
+
     }
 
     /**
-     * Обновление Истории движения посылки, при получении почтового отправления адресатом
-     * @param historyId id Истории движения посылки для изменения в бд
-     * @return представление, изменённой в бд, сущности Истории движения посылки
+     * Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
+     */
+    public PostalItemHistoryDTO departurePostalItem(PostalItem postalItem, PostOffice office) {
+
+        PostalItemHistory history = new PostalItemHistory();
+        List<PostOffice> officeList = new ArrayList<>();
+
+        officeList.add(office);
+
+        history.setStatus(Status.DEPARTURE);
+        history.setPostalItemOwner(postalItem);
+        history.setOffices(officeList);
+
+        postalItemHistoryRepository.save(history);
+
+        return postalItemHistoryMapper.mapperToDTO(history);
+    }
+
+    /**
+     * Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
      */
     public PostalItemHistoryDTO receivedPostalItem(Long historyId) {
-        var updateEntity = getById(historyId);
-        updateEntity.setStatus(Status.RECEIVED);
-        postalItemHistoryRepository.save(updateEntity);
-        return postalItemHistoryMapper.mapperToDTO(updateEntity);
+
+        PostalItemHistory history = new PostalItemHistory();
+
+        history.setStatus(Status.RECEIVED);
+
+        postalItemHistoryRepository.save(history);
+
+        return postalItemHistoryMapper.mapperToDTO(history);
     }
 
+    /**
+     * Получение статуса почтового отправления
+     */
+    public String readStatusById(Long postalItemId) {
+        return getById(postalItemId).getStatus().getDescriptions();
+
+    }
+
+    /**
+     * Получение ПОЛНОЙ ИСТОРИИ одного почтового отправления
+     */
+    public List<PostalItemHistory> read(Long postalItemId) {
+        return postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
+    }
+
+    /**
+     * Получение АКТУАЛЬНОГО статуса одного почтового отправления
+     */
+    public String readLastStatus(Long postalItemId) {
+
+        var status = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
+
+        String result = null;
+        if (!status.isEmpty()){
+            status.sort(Comparator.comparing(PostalItemHistory::getId));
+            result = status.get(status.size() - 1).getStatus().getDescriptions();
+        }
+
+        return result;
+    }
 
     /**
      * Метод внутреннего пользования, для получения Истории движения посылки(сущности) по идентификатору
@@ -68,4 +140,5 @@ public class PostalItemHistoryService {
         return postalItemHistoryRepository.findById(postalItemHistoryId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, ex));
     }
+
 }
