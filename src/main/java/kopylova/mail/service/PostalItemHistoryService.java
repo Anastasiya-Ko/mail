@@ -5,7 +5,6 @@ import kopylova.mail.model.dictionary.Status;
 import kopylova.mail.model.entity.PostOffice;
 import kopylova.mail.model.entity.PostalItem;
 import kopylova.mail.model.entity.PostalItemHistory;
-import kopylova.mail.model.view.PostOfficeDTO;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.repository.PostalItemHistoryRepository;
 import lombok.AccessLevel;
@@ -18,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для работы с Историей движения посылки
@@ -114,8 +114,9 @@ public class PostalItemHistoryService {
     /**
      * Получение ПОЛНОЙ ИСТОРИИ одного почтового отправления
      */
-    public List<PostalItemHistory> read(Long postalItemId) {
-        return postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
+    public List<PostalItemHistoryDTO> readAllHistory(Long postalItemId) {
+        List<PostalItemHistory> listEntity = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
+        return listEntity.stream().map(list -> postalItemHistoryMapper.mapperToDTO(list)).collect(Collectors.toList());
     }
 
     /**

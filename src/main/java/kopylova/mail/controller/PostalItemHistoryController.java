@@ -43,9 +43,9 @@ public class PostalItemHistoryController {
     /**
      * Получение ВСЕЙ ИСТОРИИ движения одного почтового отправления
      */
-    @GetMapping
-    public List<PostalItemHistory> readAllPostalItemHistory(@RequestParam Long postalItemId){
-        return postalItemHistoryService.read(postalItemId);
+    @GetMapping("/all-history")
+    public List<PostalItemHistoryDTO> readAllPostalItemHistory(@RequestParam Long postalItemId){
+        return postalItemHistoryService.readAllHistory(postalItemId);
     }
 
     /**
