@@ -14,9 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,17 +52,17 @@ public class PostalItemHistoryService {
     }
 
     /**
-     * ??? переделать на получение id Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
+     * ПРИБЫТИЕ почтового отправления в промежуточный почтовый пункт
      */
-    public PostalItemHistoryDTO arrivalPostalItem(PostalItem postalItem, PostOffice office) {
+    public PostalItemHistoryDTO arrivalPostalItem(Long postalItemId, Long officeId) {
 
 
         PostalItemHistory history = new PostalItemHistory();
+
         List<PostOffice> officeList = new ArrayList<>();
+        officeList.add(postOfficeService.getById(officeId));
 
-        officeList.add(office);
-
-        history.setPostalItemOwner(postalItem);
+        history.setPostalItemOwner(postalItemService.getById(postalItemId));
         history.setStatus(Status.ARRIVAL);
         history.setOffices(officeList);
 
@@ -83,7 +81,7 @@ public class PostalItemHistoryService {
 
         history.setPostalItemOwner(postalItemService.getById(postalItemId));
         history.setStatus(Status.DEPARTURE);
-        history.setOffices(null);
+        history.setOffices(Collections.emptyList());
 
         postalItemHistoryRepository.save(history);
 
@@ -91,15 +89,15 @@ public class PostalItemHistoryService {
     }
 
     /**
-     * переделать на получение id Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
+     * ПОЛУЧЕНИЕ почтового отправления адресатом
      */
-    public PostalItemHistoryDTO receivedPostalItem(PostalItem postalItem) {
+    public PostalItemHistoryDTO receivedPostalItem(Long postalItemId) {
 
         PostalItemHistory history = new PostalItemHistory();
 
-        history.setPostalItemOwner(postalItem);
+        history.setPostalItemOwner(postalItemService.getById(postalItemId));
         history.setStatus(Status.RECEIVED);
-        history.setOffices(null);
+        history.setOffices(Collections.emptyList());
 
         postalItemHistoryRepository.save(history);
 

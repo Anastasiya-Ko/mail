@@ -23,8 +23,7 @@ public class PostalItemController {
      * Регистрация нового почтового отправления, с указанием id Почтового офиса
      */
     @PostMapping
-    public PostalItemDTO createPostalItem(
-            @Valid @RequestBody PostalItemDTO view) {
+    public PostalItemDTO createPostalItem(@Valid @RequestBody PostalItemDTO view) {
         return postalItemService.createPostalItem(view);
     }
 

@@ -1,7 +1,6 @@
 package kopylova.mail.controller;
 
 import jakarta.validation.Valid;
-import kopylova.mail.model.entity.PostOffice;
 import kopylova.mail.model.entity.PostalItem;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.service.PostalItemHistoryService;
@@ -33,15 +32,15 @@ public class PostalItemHistoryController {
     }
 
     /**
-     * Обновление Истории движения посылки, ПО ПРИБЫТИЮ в промежуточный почтовый пункт
+     * ПРИБЫТИЕ почтового отправления в промежуточный почтовый пункт
      */
     @PostMapping("/arrival-postal-item")
-    public PostalItemHistoryDTO arrivalPostalItem(@Valid @RequestBody PostalItem postalItem, PostOffice office){
-        return postalItemHistoryService.arrivalPostalItem(postalItem, office);
+    public PostalItemHistoryDTO arrivalPostalItem(@RequestParam Long postalItemId, @RequestParam Long officeId){
+        return postalItemHistoryService.arrivalPostalItem(postalItemId, officeId);
     }
 
     /**
-     * Обновление Истории движения посылки, ПО УБЫТИЮ из почтового пункта
+     * УБЫТИЕ почтового отправления
      */
     @PostMapping("/departure-postal-item")
     public PostalItemHistoryDTO departurePostalItem(@RequestParam Long postalItemId){
@@ -49,15 +48,15 @@ public class PostalItemHistoryController {
     }
 
     /**
-     * Обновление Истории движения посылки, ПРИ ПОЛУЧЕНИИ почтового отправления адресатом
+     * ПОЛУЧЕНИЕ почтового отправления адресатом
      */
     @PostMapping("/received-postal-item")
-    public PostalItemHistoryDTO receivedPostalItem(@Valid @RequestBody PostalItem postalItem){
-        return postalItemHistoryService.receivedPostalItem(postalItem);
+    public PostalItemHistoryDTO receivedPostalItem(@RequestParam Long postalItemId){
+        return postalItemHistoryService.receivedPostalItem(postalItemId);
     }
 
     /**
-     * Получение ВСЕЙ ИСТОРИИ движения одного почтового отправления
+     * Получение ВСЕЙ ИСТОРИИ движения почтового отправления
      */
     @GetMapping("/all-history")
     public List<PostalItemHistoryDTO> readAllPostalItemHistory(@RequestParam Long postalItemId){
@@ -65,7 +64,7 @@ public class PostalItemHistoryController {
     }
 
     /**
-     * Получение КРАЙНЕГО СТАТУСА одного почтового отправления
+     * Получение КРАЙНЕГО СТАТУСА почтового отправления
      */
     @GetMapping("/last-status")
     public String readLastStatusPostalItem(@RequestParam Long postalItemId){

@@ -51,12 +51,9 @@ public class PostalItemHistoryMapper {
         view.setStatus(String.valueOf(entity.getStatus()));
         view.setPostalItemOwner(postalItemMapper.mapperToDTO(entity.getPostalItemOwner()));
 
-        if (view.getOffices() != null) {
-            view.setOffices(entity.getOffices().stream()
-                    .map(postOffice -> postOfficeMapper.mapperToDTO(postOffice))
-                    .collect(Collectors.toList()));
-        } else view.setOffices(null);
-
+        view.setOffices(entity.getOffices().stream()
+                .map(postOffice -> postOfficeMapper.mapperToDTO(postOffice))
+                .collect(Collectors.toList()));
 
         return view;
     }
