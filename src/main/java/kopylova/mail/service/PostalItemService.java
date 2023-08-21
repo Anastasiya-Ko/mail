@@ -1,6 +1,5 @@
 package kopylova.mail.service;
 
-import kopylova.mail.mapper.PostalItemHistoryMapper;
 import kopylova.mail.mapper.PostalItemMapper;
 import kopylova.mail.model.entity.PostalItem;
 import kopylova.mail.model.view.PostalItemDTO;
@@ -47,7 +46,7 @@ public class PostalItemService {
      */
     public PostalItemDTO readOnePostalItem(Long id){
 
-        return postalItemMapper.mapperToDTO(getById(id));
+        return postalItemMapper.mapperToDTO(getPostalItemById(id));
     }
 
     /**
@@ -62,7 +61,7 @@ public class PostalItemService {
     /**
      * Метод, для получения Почтового отправления(сущности) по идентификатору
      */
-    public PostalItem getById(Long postalItemId) {
+    public PostalItem getPostalItemById(Long postalItemId) {
         String ex = String.format(("Почтовое отправление с номером = %d не найдено"), postalItemId);
         return postalItemRepository.findById(postalItemId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, ex));

@@ -56,7 +56,7 @@ public class PostalItemHistoryController {
     }
 
     /**
-     * Получение ВСЕЙ ИСТОРИИ движения почтового отправления
+     * ВСЯ ИСТОРИЯ движения почтового отправления
      */
     @GetMapping("/all-history")
     public List<PostalItemHistoryDTO> readAllPostalItemHistory(@RequestParam Long postalItemId){
@@ -64,7 +64,7 @@ public class PostalItemHistoryController {
     }
 
     /**
-     * Получение КРАЙНЕГО СТАТУСА почтового отправления
+     * КРАЙНИЙ СТАТУС почтового отправления
      */
     @GetMapping("/last-status")
     public String readLastStatusPostalItem(@RequestParam Long postalItemId){

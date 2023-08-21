@@ -39,7 +39,7 @@ public class PostOfficeService {
      * Получение одного Почтового отделения, по его id
      */
     public PostOfficeDTO readOnePostOffice(Long postOfficeId){
-        return postOfficeMapper.mapperToDTO(getById(postOfficeId));
+        return postOfficeMapper.mapperToDTO(getPostOfficeById(postOfficeId));
     }
 
     public List<PostOfficeDTO> readAllPostOffice(){
@@ -47,7 +47,7 @@ public class PostOfficeService {
         return listEntity.stream().map(entity -> postOfficeMapper.mapperToDTO(entity)).collect(Collectors.toList());
     }
 
-    public PostOffice getById(Long id) {
+    public PostOffice getPostOfficeById(Long id) {
         return postOfficeRepository.findById(id).orElseThrow(() -> new RuntimeException("Почтовое отделение не найдено!"));
     }
 }

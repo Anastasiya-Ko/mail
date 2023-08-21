@@ -3,7 +3,6 @@ package kopylova.mail.service;
 import kopylova.mail.mapper.PostalItemHistoryMapper;
 import kopylova.mail.model.dictionary.Status;
 import kopylova.mail.model.entity.PostOffice;
-import kopylova.mail.model.entity.PostalItem;
 import kopylova.mail.model.entity.PostalItemHistory;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.repository.PostalItemHistoryRepository;
@@ -37,13 +36,23 @@ public class PostalItemHistoryService {
      */
     public PostalItemHistoryDTO registrationPostalItem(Long postalItemId, Long officeId) {
 
+        //Проверка на наличие отправления в бд
+        postalItemService.getPostalItemById(postalItemId);
+
+        //Проверка на наличие офиса в бд
+        postOfficeService.getPostOfficeById(officeId);
+
         PostalItemHistory history = new PostalItemHistory();
 
         List<PostOffice> officeList = new ArrayList<>();
-        officeList.add(postOfficeService.getById(officeId));
+        officeList.add(postOfficeService.getPostOfficeById(officeId));
 
-        history.setPostalItemOwner(postalItemService.getById(postalItemId));
-        history.setStatus(Status.REGISTRATION);
+        history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
+
+        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+            history.setStatus(Status.REGISTRATION);
+        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
@@ -56,14 +65,23 @@ public class PostalItemHistoryService {
      */
     public PostalItemHistoryDTO arrivalPostalItem(Long postalItemId, Long officeId) {
 
+        //Проверка на наличие отправления в бд
+        postalItemService.getPostalItemById(postalItemId);
+
+        //Проверка на наличие офиса в бд
+        postOfficeService.getPostOfficeById(officeId);
 
         PostalItemHistory history = new PostalItemHistory();
 
         List<PostOffice> officeList = new ArrayList<>();
-        officeList.add(postOfficeService.getById(officeId));
+        officeList.add(postOfficeService.getPostOfficeById(officeId));
 
-        history.setPostalItemOwner(postalItemService.getById(postalItemId));
-        history.setStatus(Status.ARRIVAL);
+        history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
+
+        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+            history.setStatus(Status.ARRIVAL);
+        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
@@ -77,10 +95,17 @@ public class PostalItemHistoryService {
      */
     public PostalItemHistoryDTO departurePostalItem(Long postalItemId) {
 
+        //Проверка на наличие отправления в бд
+        postalItemService.getPostalItemById(postalItemId);
+
         PostalItemHistory history = new PostalItemHistory();
 
-        history.setPostalItemOwner(postalItemService.getById(postalItemId));
-        history.setStatus(Status.DEPARTURE);
+        history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
+
+        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+            history.setStatus(Status.DEPARTURE);
+        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+
         history.setOffices(Collections.emptyList());
 
         postalItemHistoryRepository.save(history);
@@ -93,10 +118,17 @@ public class PostalItemHistoryService {
      */
     public PostalItemHistoryDTO receivedPostalItem(Long postalItemId) {
 
+        //Проверка на наличие отправления в бд
+        postalItemService.getPostalItemById(postalItemId);
+
         PostalItemHistory history = new PostalItemHistory();
 
-        history.setPostalItemOwner(postalItemService.getById(postalItemId));
-        history.setStatus(Status.RECEIVED);
+        history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
+
+        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+            history.setStatus(Status.RECEIVED);
+        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+
         history.setOffices(Collections.emptyList());
 
         postalItemHistoryRepository.save(history);
@@ -109,7 +141,9 @@ public class PostalItemHistoryService {
      * Получение ПОЛНОЙ ИСТОРИИ одного почтового отправления
      */
     public List<PostalItemHistoryDTO> readAllHistory(Long postalItemId) {
+
         List<PostalItemHistory> listEntity = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
+
         return listEntity.stream().map(list -> postalItemHistoryMapper.mapperToDTO(list)).collect(Collectors.toList());
     }
 
@@ -137,5 +171,6 @@ public class PostalItemHistoryService {
         return postalItemHistoryRepository.findById(postalItemHistoryId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, ex));
     }
+
 
 }
