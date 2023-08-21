@@ -1,5 +1,6 @@
 package kopylova.mail.controller;
 
+import jakarta.validation.Valid;
 import kopylova.mail.model.view.PostOfficeDTO;
 import kopylova.mail.service.PostOfficeService;
 import lombok.AccessLevel;
@@ -18,7 +19,7 @@ public class PostOfficeController {
     PostOfficeService postOfficeService;
 
     @PostMapping
-    public PostOfficeDTO create(@RequestBody PostOfficeDTO view){
+    public PostOfficeDTO create(@Valid @RequestBody PostOfficeDTO view){
         return postOfficeService.create(view);
     }
 

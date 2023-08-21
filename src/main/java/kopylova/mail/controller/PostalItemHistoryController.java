@@ -1,7 +1,5 @@
 package kopylova.mail.controller;
 
-import jakarta.validation.Valid;
-import kopylova.mail.model.entity.PostalItem;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.service.PostalItemHistoryService;
 import lombok.AccessLevel;

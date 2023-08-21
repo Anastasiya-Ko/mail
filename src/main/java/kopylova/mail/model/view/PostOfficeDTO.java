@@ -20,7 +20,7 @@ public class PostOfficeDTO {
     @Positive(message = "Индекс должен содержать только положительные числа")
     Integer officeIndex;
 
-    @NotBlank(message = "У Почтового отделения должно быть название")
+    @NotNull(message = "У Почтового отделения должно быть название")
     String officeName;
 
     @NotBlank(message = "У Почтового отделения должен быть адрес")

@@ -49,9 +49,9 @@ public class PostalItemHistoryService {
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
 
-        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+        if (postalItemService.getPostalItemById(postalItemId).getPostalItemHistories().isEmpty()) {
             history.setStatus(Status.REGISTRATION);
-        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+        } else throw new RuntimeException("Почтовое отправление при регистрации должно быть без предыдущего статуса");
 
         history.setOffices(officeList);
 
@@ -78,9 +78,9 @@ public class PostalItemHistoryService {
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
 
-        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+        //if () {
             history.setStatus(Status.ARRIVAL);
-        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+        //} else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
 
         history.setOffices(officeList);
 
@@ -102,9 +102,9 @@ public class PostalItemHistoryService {
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
 
-        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+        //if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
             history.setStatus(Status.DEPARTURE);
-        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+        //} else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
 
         history.setOffices(Collections.emptyList());
 
@@ -125,9 +125,9 @@ public class PostalItemHistoryService {
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
 
-        if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
+        //if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
             history.setStatus(Status.RECEIVED);
-        } else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
+        //} else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
 
         history.setOffices(Collections.emptyList());
 
@@ -142,6 +142,9 @@ public class PostalItemHistoryService {
      */
     public List<PostalItemHistoryDTO> readAllHistory(Long postalItemId) {
 
+        //Проверка на наличие отправления в бд
+        postalItemService.getPostalItemById(postalItemId);
+
         List<PostalItemHistory> listEntity = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
 
         return listEntity.stream().map(list -> postalItemHistoryMapper.mapperToDTO(list)).collect(Collectors.toList());
@@ -151,6 +154,9 @@ public class PostalItemHistoryService {
      * Получение КРАЙНЕГО статуса одного почтового отправления
      */
     public String readLastStatus(Long postalItemId) {
+
+        //Проверка на наличие отправления в бд
+        postalItemService.getPostalItemById(postalItemId);
 
         var history = postalItemHistoryRepository.findAllByPostalItemOwnerId(postalItemId);
 
