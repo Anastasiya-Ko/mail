@@ -1,5 +1,8 @@
 package kopylova.mail.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import kopylova.mail.service.PostalItemHistoryService;
 import lombok.AccessLevel;
@@ -9,63 +12,58 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Контроллер для работы с историей передвижения Почтового отправления
- */
-
 @RestController
 @RequestMapping("/history-status")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Tag(name = "Контроллер История движения почтового отправления",
+     description = "Взаимодействие со справочником История движения почтового отправления")
 public class PostalItemHistoryController {
 
     PostalItemHistoryService postalItemHistoryService;
 
-    /**
-     * Регистрация почтового отправления
-     */
     @PostMapping("/registration-postal-item")
-    public PostalItemHistoryDTO registrationPostalItem(@RequestParam Long postalItemId, @RequestParam Long postOfficeId){
+    @Operation(summary = "Назначение почтовому отправлению статуса - зарегистрировано")
+    public PostalItemHistoryDTO registrationPostalItem(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId,
+            @RequestParam @Parameter(description = "Идентификатор почтового офиса") Long postOfficeId){
         return postalItemHistoryService.registrationPostalItem(postalItemId, postOfficeId);
     }
 
-    /**
-     * ПРИБЫТИЕ почтового отправления в промежуточный почтовый пункт
-     */
     @PostMapping("/arrival-postal-item")
-    public PostalItemHistoryDTO arrivalPostalItem(@RequestParam Long postalItemId, @RequestParam Long officeId){
-        return postalItemHistoryService.arrivalPostalItem(postalItemId, officeId);
+    @Operation(summary = "Назначение почтовому отправлению статуса - прибыло в промежуточное почтовое отделение")
+    public PostalItemHistoryDTO arrivalPostalItem(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId,
+            @RequestParam @Parameter(description = "Идентификатор почтового офиса") Long postOfficeId){
+        return postalItemHistoryService.arrivalPostalItem(postalItemId, postOfficeId);
     }
 
-    /**
-     * УБЫТИЕ почтового отправления
-     */
     @PostMapping("/departure-postal-item")
-    public PostalItemHistoryDTO departurePostalItem(@RequestParam Long postalItemId){
+    @Operation(summary = "Назначение почтовому отправлению статуса - убыло из почтового отделения")
+    public PostalItemHistoryDTO departurePostalItem(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId){
         return postalItemHistoryService.departurePostalItem(postalItemId);
     }
 
-    /**
-     * ПОЛУЧЕНИЕ почтового отправления адресатом
-     */
+
     @PostMapping("/received-postal-item")
-    public PostalItemHistoryDTO receivedPostalItem(@RequestParam Long postalItemId){
+    @Operation(summary = "Назначение почтовому отправлению статуса - получено адресатом")
+    public PostalItemHistoryDTO receivedPostalItem(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId){
         return postalItemHistoryService.receivedPostalItem(postalItemId);
     }
 
-    /**
-     * ВСЯ ИСТОРИЯ движения почтового отправления
-     */
     @GetMapping("/all-history")
-    public List<PostalItemHistoryDTO> readAllPostalItemHistory(@RequestParam Long postalItemId){
+    @Operation(summary = "Полная история движения почтового отправления")
+    public List<PostalItemHistoryDTO> readAllPostalItemHistory(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId){
         return postalItemHistoryService.readAllHistory(postalItemId);
     }
 
-    /**
-     * КРАЙНИЙ СТАТУС почтового отправления
-     */
     @GetMapping("/last-status")
-    public String readLastStatusPostalItem(@RequestParam Long postalItemId){
+    @Operation(summary = "Получение текущего статуса почтового отправления")
+    public String readLastStatusPostalItem(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId){
         return postalItemHistoryService.readLastStatus(postalItemId);
     }
 }

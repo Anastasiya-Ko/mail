@@ -1,6 +1,9 @@
 package kopylova.mail.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kopylova.mail.model.view.PostalItemDTO;
 import kopylova.mail.service.PostalItemService;
@@ -15,30 +18,27 @@ import java.util.List;
 @RequestMapping("/postal-item")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Tag(name = "Контроллер Почтовое отправление", description = "Взаимодействие со справочником Почтовое отправление")
 public class PostalItemController {
 
     PostalItemService postalItemService;
 
-    /**
-     * Регистрация нового почтового отправления, с указанием id Почтового офиса
-     */
     @PostMapping
-    public PostalItemDTO createPostalItem(@Valid @RequestBody PostalItemDTO view) {
+    @Operation(summary = "Внесение в базу нового почтового отправления")
+    public PostalItemDTO createPostalItem(
+            @Valid @RequestBody @Parameter(description = "Представление почтового отправления") PostalItemDTO view) {
         return postalItemService.createPostalItem(view);
     }
 
-    /**
-     * Чтение одного Почтового отправления по id
-     */
     @GetMapping("/one")
-    public PostalItemDTO readOnePostalItem(@RequestParam Long postalItemId){
+    @Operation(summary = "Поиск почтового отправления по его идентификатору")
+    public PostalItemDTO readOnePostalItem(
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId){
         return postalItemService.readOnePostalItem(postalItemId);
     }
 
-    /**
-     * Чтение всех Почтовых отправлений
-     */
     @GetMapping("/all")
+    @Operation(summary = "Чтение всех почтовых отправлений в бд")
     public List<PostalItemDTO> readAllPostalItems(){
         return postalItemService.readAllPostalItems();
     }
