@@ -19,8 +19,8 @@ public class PostOfficeController {
     PostOfficeService postOfficeService;
 
     @PostMapping
-    public PostOfficeDTO create(@Valid @RequestBody PostOfficeDTO view){
-        return postOfficeService.create(view);
+    public PostOfficeDTO createOffice(@Valid @RequestBody PostOfficeDTO view){
+        return postOfficeService.createOffice(view);
     }
 
     @GetMapping("/one")

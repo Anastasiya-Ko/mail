@@ -20,6 +20,7 @@ public class PostalItemMapper {
     public PostalItem mapperToEntity(PostalItemDTO view) {
         PostalItem entity = new PostalItem();
 
+        entity.setId(view.getId());
         entity.setType(Type.valueOf(view.getType()));
         entity.setRecipientIndex(view.getRecipientIndex());
         entity.setRecipientAddress(view.getRecipientAddress());
@@ -38,6 +39,7 @@ public class PostalItemMapper {
 
         PostalItemDTO view = new PostalItemDTO();
 
+        view.setId(entity.getId());
         view.setType(String.valueOf(entity.getType()));
         view.setRecipientIndex(entity.getRecipientIndex());
         view.setRecipientAddress(entity.getRecipientAddress());

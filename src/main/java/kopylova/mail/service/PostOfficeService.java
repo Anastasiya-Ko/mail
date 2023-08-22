@@ -27,7 +27,7 @@ public class PostOfficeService {
     /**
      * Создание нового Почтового отделения
      */
-    public PostOfficeDTO create(PostOfficeDTO view) {
+    public PostOfficeDTO createOffice(PostOfficeDTO view) {
 
         var newOffice = postOfficeMapper.mapperToEntity(view);
         postOfficeRepository.save(newOffice);

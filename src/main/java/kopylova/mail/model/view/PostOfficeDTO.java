@@ -16,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostOfficeDTO {
 
+    Long id;
+
     @NotNull(message = "У Почтового отделения должен быть индекс")
     @Positive(message = "Индекс должен содержать только положительные числа")
     Integer officeIndex;

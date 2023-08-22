@@ -1,9 +1,7 @@
 package kopylova.mail.mapper;
 
 import kopylova.mail.model.dictionary.Status;
-import kopylova.mail.model.entity.PostOffice;
 import kopylova.mail.model.entity.PostalItemHistory;
-import kopylova.mail.model.view.PostOfficeDTO;
 import kopylova.mail.model.view.PostalItemHistoryDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +30,7 @@ public class PostalItemHistoryMapper {
     public PostalItemHistory mapperToEntity(PostalItemHistoryDTO view) {
         PostalItemHistory entity = new PostalItemHistory();
 
+        entity.setId(view.getId());
         entity.setStatus(Status.valueOf(view.getStatus()));
         entity.setPostalItemOwner(postalItemMapper.mapperToEntity(view.getPostalItemOwner()));
 
@@ -48,6 +47,7 @@ public class PostalItemHistoryMapper {
 
         PostalItemHistoryDTO view = new PostalItemHistoryDTO();
 
+        view.setId(entity.getId());
         view.setStatus(String.valueOf(entity.getStatus()));
         view.setPostalItemOwner(postalItemMapper.mapperToDTO(entity.getPostalItemOwner()));
 

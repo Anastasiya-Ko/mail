@@ -16,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostalItemDTO {
 
+    Long id;
 
     @NotNull(message = "У Почтового отправления должен быть тип")
     String type;

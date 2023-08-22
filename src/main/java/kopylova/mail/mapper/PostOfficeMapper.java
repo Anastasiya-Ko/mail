@@ -19,6 +19,7 @@ public class PostOfficeMapper {
     public PostOffice mapperToEntity(PostOfficeDTO view) {
         PostOffice entity = new PostOffice();
 
+        entity.setId(view.getId());
         entity.setOfficeIndex(view.getOfficeIndex());
         entity.setOfficeName(view.getOfficeName());
         entity.setOfficeAddress(view.getOfficeAddress());
@@ -36,6 +37,7 @@ public class PostOfficeMapper {
 
         PostOfficeDTO view = new PostOfficeDTO();
 
+        view.setId(entity.getId());
         view.setOfficeIndex(entity.getOfficeIndex());
         view.setOfficeName(entity.getOfficeName());
         view.setOfficeAddress(entity.getOfficeAddress());
