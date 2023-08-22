@@ -3,6 +3,7 @@ package kopylova.mail.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -29,6 +30,7 @@ public class PostalItemController {
 
     @PostMapping
     @Operation(summary = "Внесение в базу нового почтового отправления")
+    @ApiResponse(description = "Представление почтового отправления")
     public PostalItemDTO createPostalItem(
             @Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Представление почтового отправления") PostalItemDTO view) {
@@ -37,6 +39,7 @@ public class PostalItemController {
 
     @GetMapping("/one")
     @Operation(summary = "Поиск почтового отправления по его идентификатору")
+    @ApiResponse(description = "Представление почтового отправления")
     public PostalItemDTO readOnePostalItem(
             @RequestParam @Parameter(description = "Идентификатор почтового отправления")
             @Min(0) Long postalItemId){
@@ -45,6 +48,7 @@ public class PostalItemController {
 
     @GetMapping("/all")
     @Operation(summary = "Чтение всех почтовых отправлений в бд")
+    @ApiResponse(description = "Лист представлений почтового отправления")
     public List<PostalItemDTO> readAllPostalItems(){
         return postalItemService.readAllPostalItems();
     }

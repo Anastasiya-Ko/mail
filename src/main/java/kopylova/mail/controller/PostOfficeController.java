@@ -2,6 +2,7 @@ package kopylova.mail.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -27,6 +28,7 @@ public class PostOfficeController {
 
     @PostMapping
     @Operation(summary = "Внесение в базу нового почтового офиса")
+    @ApiResponse(description = "Представление почтового офиса")
     public PostOfficeDTO createOffice(
             @Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Представление почтового офиса") PostOfficeDTO view){
@@ -35,6 +37,7 @@ public class PostOfficeController {
 
     @GetMapping("/one")
     @Operation(summary = "Поиск почтового офиса по его идентификатору")
+    @ApiResponse(description = "Представление почтового офиса")
     public PostOfficeDTO readOnePostOffice(
             @RequestParam @Parameter(description = "Идентификатор почтового офиса")
             @Min(0) Long postOfficeId){
@@ -43,6 +46,7 @@ public class PostOfficeController {
 
     @GetMapping("/all")
     @Operation(summary = "Чтение всех почтовых офисов в бд")
+    @ApiResponse(description = "Лист представлений почтового офиса")
     public List<PostOfficeDTO> readAllPostOffice(){
         return postOfficeService.readAllPostOffice();
     }
