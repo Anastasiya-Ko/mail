@@ -5,16 +5,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import kopylova.mail.model.view.PostalItemDTO;
 import kopylova.mail.service.PostalItemService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@Validated
 @RequestMapping("/postal-item")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -26,14 +30,16 @@ public class PostalItemController {
     @PostMapping
     @Operation(summary = "Внесение в базу нового почтового отправления")
     public PostalItemDTO createPostalItem(
-            @Valid @RequestBody @Parameter(description = "Представление почтового отправления") PostalItemDTO view) {
+            @Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Представление почтового отправления") PostalItemDTO view) {
         return postalItemService.createPostalItem(view);
     }
 
     @GetMapping("/one")
     @Operation(summary = "Поиск почтового отправления по его идентификатору")
     public PostalItemDTO readOnePostalItem(
-            @RequestParam @Parameter(description = "Идентификатор почтового отправления") Long postalItemId){
+            @RequestParam @Parameter(description = "Идентификатор почтового отправления")
+            @Min(0) Long postalItemId){
         return postalItemService.readOnePostalItem(postalItemId);
     }
 
