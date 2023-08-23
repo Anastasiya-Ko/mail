@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Настройка конфигурации сваггера, который позволяет автоматически описывать API на основе его кода
+ * Настройка конфигурации swagger, который позволяет автоматически описывать API на основе его кода
  */
 @Configuration
 public class SwaggerConfig {
