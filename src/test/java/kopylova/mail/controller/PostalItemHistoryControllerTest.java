@@ -26,7 +26,7 @@ class PostalItemHistoryControllerTest {
     @Test
     void testRegistrationPostalItem() {
 
-        Long postalItemId = 16L;
+        Long postalItemId = 19L;
         Long officeId = 2L;
 
         PostalItemHistoryDTO createDto = controller.registrationPostalItem(postalItemId, officeId);
