@@ -32,7 +32,7 @@ public class PostalItemDTO {
     String recipientAddress;
 
     @NotBlank(message = "У Почтового отправления должно быть имя получателя!")
-    @Schema(description = "Имя получателя почтового отправления", example = "Лев Толстой")
+    @Schema(description = "Имя получателя почтового отправления", example = "Имя Фамилия")
     String receiverName;
 
 }

@@ -26,7 +26,7 @@ class PostalItemHistoryControllerTest {
     @Test
     void testRegistrationPostalItem() {
 
-        Long postalItemId = 3L;
+        Long postalItemId = 16L;
         Long officeId = 2L;
 
         PostalItemHistoryDTO createDto = controller.registrationPostalItem(postalItemId, officeId);
@@ -36,7 +36,7 @@ class PostalItemHistoryControllerTest {
     @Test
     void testArrivalPostalItem() {
 
-        Long postalItemId = 2L;
+        Long postalItemId = 16L;
         Long officeId = 2L;
 
         PostalItemHistoryDTO createDto = controller.arrivalPostalItem(postalItemId, officeId);
@@ -47,7 +47,7 @@ class PostalItemHistoryControllerTest {
     @Test
     void testDeparturePostalItem() {
 
-        Long postalItemId = 2L;
+        Long postalItemId = 16L;
 
         PostalItemHistoryDTO createDto = controller.departurePostalItem(postalItemId);
 
@@ -57,7 +57,7 @@ class PostalItemHistoryControllerTest {
     @Test
     void testReceivedPostalItem() {
 
-        Long postalItemId = 2L;
+        Long postalItemId = 16L;
 
         PostalItemHistoryDTO createDto = controller.receivedPostalItem(postalItemId);
 
@@ -67,7 +67,7 @@ class PostalItemHistoryControllerTest {
     @Test
     void testReadAllPostalItemHistory() {
 
-        Long postalItemId = 2L;
+        Long postalItemId = 16L;
 
         var createDto = controller.readAllPostalItemHistory(postalItemId);
 
@@ -77,13 +77,13 @@ class PostalItemHistoryControllerTest {
     @Test
     void testReadLastStatusPostalItem() {
 
-        String lastStatus = "Почтовое отправление зарегистрировано";
+        String status = "Почтовое отправление зарегистрировано";
 
-        Long postalItemId = 2L;
+        Long postalItemId = 16L;
 
-        var status = controller.readLastStatusPostalItem(postalItemId);
+        var lastStatusPostalItem = controller.readLastStatusPostalItem(postalItemId);
 
-        assertEquals(lastStatus, status);
+        assertEquals(status, lastStatusPostalItem);
 
     }
 }
