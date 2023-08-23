@@ -9,11 +9,12 @@ import kopylova.mail.repository.PostalItemHistoryRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -77,11 +78,7 @@ public class PostalItemHistoryService {
         officeList.add(postOfficeService.getPostOfficeById(officeId));
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
-
-        //if () {
-            history.setStatus(Status.ARRIVAL);
-        //} else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
-
+        history.setStatus(Status.ARRIVAL);
         history.setOffices(officeList);
 
         postalItemHistoryRepository.save(history);
@@ -101,11 +98,7 @@ public class PostalItemHistoryService {
         PostalItemHistory history = new PostalItemHistory();
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
-
-        //if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
-            history.setStatus(Status.DEPARTURE);
-        //} else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
-
+        history.setStatus(Status.DEPARTURE);
         history.setOffices(Collections.emptyList());
 
         postalItemHistoryRepository.save(history);
@@ -124,11 +117,7 @@ public class PostalItemHistoryService {
         PostalItemHistory history = new PostalItemHistory();
 
         history.setPostalItemOwner(postalItemService.getPostalItemById(postalItemId));
-
-        //if (!history.getStatus().getDescriptions().equals(readLastStatus(postalItemId))) {
-            history.setStatus(Status.RECEIVED);
-        //} else throw new RuntimeException("Статус почтового отправления должен отличаться от предыдущего");
-
+        history.setStatus(Status.RECEIVED);
         history.setOffices(Collections.emptyList());
 
         postalItemHistoryRepository.save(history);
@@ -168,15 +157,5 @@ public class PostalItemHistoryService {
 
         return result;
     }
-
-    /**
-     * Метод внутреннего пользования, для получения Истории движения посылки(сущности) по идентификатору
-     */
-    private PostalItemHistory getById(Long postalItemHistoryId) {
-        String ex = String.format(("Истории движения посылки с номером = %d не найдена"), postalItemHistoryId);
-        return postalItemHistoryRepository.findById(postalItemHistoryId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, ex));
-    }
-
 
 }
